@@ -45,6 +45,10 @@ export class Metatip extends HTMLElement {
     this.unobserve()
   }
 
+  _isFlexbox(styles) {
+    return !!styles.find(style => style.value.includes(`<span flexbox>`))
+  }
+
   set meta(data) {
     this.$shadow.innerHTML = this.render(data)
   }
@@ -62,6 +66,8 @@ export class Metatip extends HTMLElement {
               <a>.${name}</a>
             `, '')
           }
+          ${this._isFlexbox(localModifications.concat(notLocalModifications))
+              ? `<span flexbox-label>Flexbox</span>` : ''}
         </h5>
         <small>
           <span">${Math.round(width)}</span>px

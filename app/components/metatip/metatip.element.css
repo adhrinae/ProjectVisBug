@@ -14,6 +14,8 @@
   --arrow-up: polygon(0 0, 100% 0, 50% 100%);
   --arrow-down: polygon(50% 0, 0 100%, 100% 100%);
   --arrow: var(--arrow-up);
+
+  --flexbox_color: hsl(217, 89%, 61%);
 }
 
 :host figure {
@@ -71,6 +73,13 @@
       content: "\003e";
     }
   }
+
+  & span[flexbox-label] {
+    flex: 1 0 auto;
+    margin-left: 2em;
+    text-align: right;
+    color: var(--flexbox_color);
+  }
 }
 
 :host h5 {
@@ -118,7 +127,7 @@
   font-family: 'Dank Mono', 'Operator Mono', 'Inconsolata', 'Fira Mono', 'SF Mono', 'Monaco', 'Droid Sans Mono', 'Source Code Pro', monospace;
 }
 
-:host [value], 
+:host [value],
 :host [local-change] {
   color: var(--theme-text_color);
   display: inline-grid;
@@ -151,6 +160,10 @@
   min-width: 1em;
   height: 1em;
   border-radius: 50%;
+}
+
+:host [flexbox] {
+  background-color: var(--flexbox_color);
 }
 
 :host [local-modifications] {

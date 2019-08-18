@@ -2,7 +2,7 @@ import $ from 'blingblingjs'
 import hotkeys from 'hotkeys-js'
 import { TinyColor } from '@ctrl/tinycolor'
 import { queryPage } from './search'
-import { getStyles, camelToDash, isOffBounds, 
+import { getStyles, camelToDash, isOffBounds,
          deepElementFromPoint, getShadowValues,
          getTextShadowValues
 } from '../utilities/'
@@ -143,6 +143,10 @@ const render = (el, tip = document.createElement('visbug-metatip')) => {
         : true
     )
     .map(style => {
+      if (style.prop === 'display' && style.value.includes('flex')) {
+        style.value = `<span flexbox>${style.value}</span>`
+      }
+
       if (style.prop.includes('color') || style.prop.includes('background-color') || style.prop.includes('border-color') || style.prop.includes('Color') || style.prop.includes('fill') || style.prop.includes('stroke'))
         style.value = `<span color style="background-color:${style.value};"></span>${new TinyColor(style.value)[colormode]()}`
 
