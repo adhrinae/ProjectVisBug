@@ -385,9 +385,26 @@ export function Selectable(visbug) {
     })
   }
 
+  const showIframeMetaTip = el => {
+    if (hover_state.element) {
+      hover_state.element.remove()
+    }
+
+    hover_state.element = document.createElement('visbug-iframe')
+    hover_state.element.position = el.getBoundingClientRect()
+    document.body.appendChild(hover_state.element)
+    return hover_state.element
+  }
+
   const on_hover = e => {
     const $target = deepElementFromPoint(e.clientX, e.clientY)
     const tool = visbug.activeTool
+
+    if ($target.nodeName === 'IFRAME') {
+      clearMeasurements()
+      clearHover()
+      return showIframeMetaTip($target)
+    }
 
     if (isOffBounds($target) || $target.hasAttribute('data-selected') || $target.hasAttribute('draggable')) {
       clearMeasurements()

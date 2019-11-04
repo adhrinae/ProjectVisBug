@@ -17,5 +17,12 @@ test('Does not show overlay UI when hover the iframe element', async t => {
   t.pass()
 })
 
+test('Show special metatip when hover the iframe only', async t => {
+  const {page} = t.context;
+  await page.hover('iframe')
+  t.is(await page.$('visbug-iframe'), null)
+  t.pass()
+})
+
 
 test.afterEach(teardownPptrTab)
