@@ -16,7 +16,8 @@ import {
   metaKey, htmlStringToDom, createClassname, camelToDash,
   isOffBounds, getStyles, deepElementFromPoint, getShadowValues,
   isSelectorValid, findNearestChildElement, findNearestParentElement,
-  getTextShadowValues
+  getTextShadowValues,
+  positionTip
 } from '../utilities/'
 
 export function Selectable(visbug) {
@@ -385,15 +386,16 @@ export function Selectable(visbug) {
     })
   }
 
-  const showIframeMetaTip = el => {
+  const showIframeMetaTip = e => {
     if (hover_state.element) {
       hover_state.element.remove()
     }
 
     hover_state.element = document.createElement('visbug-iframe')
-    hover_state.element.position = el.getBoundingClientRect()
-    document.body.appendChild(hover_state.element)
-    return hover_state.element
+    const iframeTip = hover_state.element
+    document.body.appendChild(iframeTip)
+    iframeTip.render()
+    positionTip(iframeTip, e)
   }
 
   const on_hover = e => {
@@ -403,7 +405,7 @@ export function Selectable(visbug) {
     if ($target.nodeName === 'IFRAME') {
       clearMeasurements()
       clearHover()
-      return showIframeMetaTip($target)
+      return showIframeMetaTip(e)
     }
 
     if (isOffBounds($target) || $target.hasAttribute('data-selected') || $target.hasAttribute('draggable')) {

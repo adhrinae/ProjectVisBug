@@ -2,9 +2,9 @@ import $ from 'blingblingjs'
 import hotkeys from 'hotkeys-js'
 import { TinyColor } from '@ctrl/tinycolor'
 import { queryPage } from './search'
-import { getStyles, camelToDash, isOffBounds, 
+import { getStyles, camelToDash, isOffBounds,
          deepElementFromPoint, getShadowValues,
-         getTextShadowValues
+         getTextShadowValues, positionTip
 } from '../utilities/'
 
 const state = {
@@ -74,30 +74,6 @@ export function showTip(target, e) {
     state.active.target = target
     positionTip(state.active.tip, e)
   }
-}
-
-export function positionTip(tip, e) {
-  const { north, west } = mouse_quadrant(e)
-  const { left, top }   = tip_position(tip, e, north, west)
-
-  tip.style.left  = left
-  tip.style.top   = top
-
-  tip.style.setProperty('--arrow', north
-    ? 'var(--arrow-up)'
-    : 'var(--arrow-down)')
-
-  tip.style.setProperty('--shadow-direction', north
-    ? 'var(--shadow-up)'
-    : 'var(--shadow-down)')
-
-  tip.style.setProperty('--arrow-top', !north
-    ? '-7px'
-    : 'calc(100% - 1px)')
-
-  tip.style.setProperty('--arrow-left', west
-    ? 'calc(100% - 15px - 15px)'
-    : '15px')
 }
 
 const restorePinnedTips = () => {
@@ -192,20 +168,6 @@ const render = (el, tip = document.createElement('visbug-metatip')) => {
 
   return tip
 }
-
-const mouse_quadrant = e => ({
-  north: e.clientY > window.innerHeight / 2,
-  west:  e.clientX > window.innerWidth / 2
-})
-
-const tip_position = (node, e, north, west) => ({
-  top: `${north
-    ? e.pageY - node.clientHeight - 20
-    : e.pageY + 25}px`,
-  left: `${west
-    ? e.pageX - node.clientWidth + 23
-    : e.pageX - 21}px`,
-})
 
 const handleBlur = ({target}) => {
   if (target.hasAttribute && !target.hasAttribute('data-metatip') && state.tips.has(target))

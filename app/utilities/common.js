@@ -107,3 +107,41 @@ export const swapElements = (src, target) => {
 
   temp.parentNode.removeChild(temp)
 }
+
+const mouse_quadrant = e => ({
+  north: e.clientY > window.innerHeight / 2,
+  west:  e.clientX > window.innerWidth / 2
+})
+
+const tip_position = (node, e, north, west) => ({
+  top: `${north
+    ? e.pageY - node.clientHeight - 20
+    : e.pageY + 25}px`,
+  left: `${west
+    ? e.pageX - node.clientWidth + 23
+    : e.pageX - 21}px`,
+})
+
+export function positionTip(tip, e) {
+  const { north, west } = mouse_quadrant(e)
+  const { left, top }   = tip_position(tip, e, north, west)
+
+  tip.style.left  = left
+  tip.style.top   = top
+
+  tip.style.setProperty('--arrow', north
+    ? 'var(--arrow-up)'
+    : 'var(--arrow-down)')
+
+  tip.style.setProperty('--shadow-direction', north
+    ? 'var(--shadow-up)'
+    : 'var(--shadow-down)')
+
+  tip.style.setProperty('--arrow-top', !north
+    ? '-7px'
+    : 'calc(100% - 1px)')
+
+  tip.style.setProperty('--arrow-left', west
+    ? 'calc(100% - 15px - 15px)'
+    : '15px')
+}
